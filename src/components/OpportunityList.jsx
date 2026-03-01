@@ -30,11 +30,12 @@ const STAGE_COLORS = {
 }
 
 /* ── SF Nav (shared look) ────────────────────────────────────────────────── */
-function SFNav({ onBack }) {
+function SFNav({ onHome, onAccounts }) {
+  const navActions = { Home: onHome, Accounts: onAccounts }
   return (
     <nav className="bg-[#0176D3] h-12 flex items-center px-4 gap-3 shadow-md z-50 sticky top-0">
       <button
-        onClick={onBack}
+        onClick={onHome}
         className="w-8 h-8 flex items-center justify-center text-white hover:bg-[#014486] rounded transition-colors"
       >
         <AppsRegular fontSize={20} />
@@ -49,6 +50,7 @@ function SFNav({ onBack }) {
         {['Home', 'Accounts', 'Opportunities', 'Reports', 'Dashboards'].map((item) => (
           <button
             key={item}
+            onClick={navActions[item] ?? undefined}
             className={`px-3 py-1.5 text-sm text-white rounded-t font-medium transition-colors
               ${item === 'Accounts' ? 'bg-[#014486] border-b-2 border-white' : 'hover:bg-[#014486]'}`}
           >
@@ -67,7 +69,7 @@ function SFNav({ onBack }) {
 }
 
 /* ── Main component ──────────────────────────────────────────────────────── */
-export default function OpportunityList({ customer, products, onSelectOpportunity, onBack }) {
+export default function OpportunityList({ customer, products, onSelectOpportunity, onBack, onHome, onAccounts }) {
   if (!customer) return null
 
   const allOppsValue = customer.opportunities.reduce((s, o) => s + o.value, 0)
@@ -80,7 +82,7 @@ export default function OpportunityList({ customer, products, onSelectOpportunit
 
   return (
     <div className="min-h-screen bg-sf-bg font-sans">
-      <SFNav onBack={onBack} />
+      <SFNav onHome={onHome ?? onBack} onAccounts={onAccounts ?? onBack} />
 
       {/* Breadcrumb */}
       <div className="bg-white border-b border-sf-border px-6 py-2.5 flex items-center gap-2 text-sm sticky top-12 z-40 shadow-sm">

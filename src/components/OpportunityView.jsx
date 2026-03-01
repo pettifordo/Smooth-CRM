@@ -27,10 +27,11 @@ const TIER_CLS = {
 }
 
 /* ── SF Nav (shared) ─────────────────────────────────────────────────────── */
-function SFNav({ onBack }) {
+function SFNav({ onHome, onAccounts }) {
+  const navActions = { Home: onHome, Accounts: onAccounts }
   return (
     <nav className="bg-[#0176D3] h-12 flex items-center px-4 gap-3 shadow-md z-50 sticky top-0">
-      <button onClick={onBack} className="w-8 h-8 flex items-center justify-center text-white hover:bg-[#014486] rounded">
+      <button onClick={onHome} className="w-8 h-8 flex items-center justify-center text-white hover:bg-[#014486] rounded">
         <AppsRegular fontSize={20} />
       </button>
       <div className="flex items-center gap-2 mr-2">
@@ -43,6 +44,7 @@ function SFNav({ onBack }) {
         {['Home', 'Accounts', 'Opportunities', 'Reports', 'Dashboards'].map((item) => (
           <button
             key={item}
+            onClick={navActions[item] ?? undefined}
             className={`px-3 py-1.5 text-sm text-white rounded-t font-medium transition-colors
               ${item === 'Opportunities' ? 'bg-[#014486] border-b-2 border-white' : 'hover:bg-[#014486]'}`}
           >
@@ -122,7 +124,7 @@ function Field({ label, value, icon: Icon }) {
 }
 
 /* ── Main component ──────────────────────────────────────────────────────── */
-export default function OpportunityView({ opportunity, customer, products, onConfigurePricing, onBack }) {
+export default function OpportunityView({ opportunity, customer, products, onConfigurePricing, onBack, onHome, onAccounts }) {
   if (!opportunity || !customer) return null
 
   const oppProducts = opportunity.items
@@ -136,7 +138,7 @@ export default function OpportunityView({ opportunity, customer, products, onCon
 
   return (
     <div className="min-h-screen bg-sf-bg font-sans">
-      <SFNav onBack={onBack} />
+      <SFNav onHome={onHome ?? onBack} onAccounts={onAccounts ?? onBack} />
 
       {/* Breadcrumb */}
       <div className="bg-white border-b border-sf-border px-6 py-2.5 flex items-center gap-2 text-sm sticky top-12 z-40 shadow-sm">
@@ -290,8 +292,8 @@ export default function OpportunityView({ opportunity, customer, products, onCon
                     <span className="text-xs text-sf-text-2">List:</span>
                     <span className="text-xs font-bold text-sf-text">
                       {p.uom === 'KG'
-                        ? `$${p.list_price.toFixed(2)}/kg`
-                        : `$${p.list_price.toLocaleString()}/MT`}
+                        ? `€${p.list_price.toFixed(2)}/kg`
+                        : `€${p.list_price.toLocaleString()}/MT`}
                     </span>
                   </div>
                 </div>

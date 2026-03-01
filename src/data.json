@@ -6,7 +6,7 @@
     { "id": "s2", "category": "Surfactants", "name": "EmulsiPrime Industrial", "uom": "KG", "list_price": 8.20, "floor_price": 6.50, "market_trend": "Volatile", "ai_recommendation": "Raw material costs up; do not drop below list." }
   ],
   "customers": [
-    { "id": "c1", "name": "Global Paint Corp", "region": "EMEA", "segment": "Coatings", "tier": "Platinum", "opportunities": [{ "id": "o1", "title": "Annual Polymer Supply", "value": 340000, "stage": "Negotiation", "items": ["p1", "p2"] }] },
+    { "id": "c1", "name": "Global Paint Corp", "region": "EMEA", "segment": "Coatings", "tier": "Platinum", "opportunities": [{ "id": "o1", "title": "Annual Polymer Supply", "value": 340000, "stage": "Negotiation", "items": ["p1", "p2"] }, { "id": "o1b", "title": "Q4 Additive Package", "value": 128000, "stage": "Proposal", "items": ["s1"] }] },
     { "id": "c2", "name": "Rhine Chem Solutions", "region": "DACH", "segment": "Cleaning", "tier": "Gold", "opportunities": [{ "id": "o2", "title": "Surfactant Bulk Q3", "value": 185000, "stage": "Proposal", "items": ["s1", "s2"] }] },
     { "id": "c3", "name": "Alpine Plastics", "region": "DACH", "segment": "Packaging", "tier": "Silver", "opportunities": [{ "id": "o3", "title": "Resin Deal", "value": 290000, "stage": "Qualifying", "items": ["p1"] }] },
     { "id": "c4", "name": "EuroFiber SA", "region": "France", "segment": "Textiles", "tier": "Gold", "opportunities": [{ "id": "o4", "title": "Softener Contract", "value": 210000, "stage": "Discovery", "items": ["s2"] }] },

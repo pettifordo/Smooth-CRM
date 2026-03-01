@@ -43,11 +43,12 @@ const TREND_CONFIG = {
 }
 
 /* ── SF Nav (shared look) ────────────────────────────────────────────────── */
-function SFNav({ onBack, opportunityTitle }) {
+function SFNav({ onHome, onAccounts }) {
+  const navActions = { Home: onHome, Accounts: onAccounts }
   return (
     <nav className="bg-[#0176D3] h-12 flex items-center px-4 gap-3 shadow-md z-50 sticky top-0">
       <button
-        onClick={onBack}
+        onClick={onHome}
         className="w-8 h-8 flex items-center justify-center text-white hover:bg-[#014486] rounded transition-colors"
       >
         <AppsRegular fontSize={20} />
@@ -62,6 +63,7 @@ function SFNav({ onBack, opportunityTitle }) {
         {['Home', 'Accounts', 'Opportunities', 'Reports', 'Dashboards'].map((item) => (
           <button
             key={item}
+            onClick={navActions[item] ?? undefined}
             className={`px-3 py-1.5 text-sm text-white rounded-t font-medium transition-colors
               ${item === 'Opportunities' ? 'bg-[#014486] border-b-2 border-white' : 'hover:bg-[#014486]'}`}
           >
@@ -76,6 +78,81 @@ function SFNav({ onBack, opportunityTitle }) {
         </div>
       </div>
     </nav>
+  )
+}
+
+/* ── SAP Quote Generation Overlay ────────────────────────────────────────── */
+const GEN_STEPS = [
+  { label: 'Creating Quote Header in SAP S/4HANA',      icon: '📋' },
+  { label: 'Applying AI-Optimised Pricing Conditions',  icon: '✦'  },
+  { label: 'Posting Document to Sales · Quotations',    icon: '◈'  },
+]
+
+function QuoteGenerationOverlay({ step }) {
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4 border border-sf-border">
+        {/* SAP badge */}
+        <div className="flex items-center gap-2 mb-6">
+          <div className="h-7 px-2.5 bg-[#0854A0] rounded flex items-center">
+            <span className="text-white font-extrabold text-xs tracking-tight">SAP</span>
+          </div>
+          <span className="text-sf-text font-semibold text-sm">S/4HANA Cloud · Generating Quote…</span>
+        </div>
+
+        {/* Steps */}
+        <div className="space-y-3">
+          {GEN_STEPS.map((s, idx) => {
+            const isDone    = idx < step
+            const isCurrent = idx === step
+            return (
+              <div
+                key={idx}
+                className={`flex items-center gap-3 rounded-xl px-4 py-3 border transition-all duration-500
+                  ${isDone    ? 'bg-green-50 border-green-200'
+                  : isCurrent ? 'bg-[#E8F0FB] border-[#0854A0]/30'
+                  : 'bg-gray-50 border-gray-200 opacity-40'}`}
+              >
+                {/* Status icon */}
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-sm
+                  ${isDone    ? 'bg-green-500 text-white'
+                  : isCurrent ? 'bg-[#0854A0] text-white'
+                  : 'bg-gray-200 text-gray-400'}`}
+                >
+                  {isDone ? '✓' : s.icon}
+                </div>
+
+                {/* Label */}
+                <span className={`text-sm font-medium flex-1
+                  ${isDone ? 'text-green-700' : isCurrent ? 'text-[#0854A0]' : 'text-gray-400'}`}
+                >
+                  {s.label}
+                </span>
+
+                {/* Spinner or checkmark */}
+                {isCurrent && (
+                  <div className="w-4 h-4 border-2 border-[#0854A0] border-t-transparent rounded-full animate-spin flex-shrink-0" />
+                )}
+                {isDone && (
+                  <CheckmarkCircleFilled fontSize={18} className="text-green-500 flex-shrink-0" />
+                )}
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Progress bar */}
+        <div className="mt-5 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-[#0854A0] to-[#0176D3] rounded-full transition-all duration-700"
+            style={{ width: `${Math.round((step / GEN_STEPS.length) * 100)}%` }}
+          />
+        </div>
+        <p className="text-xs text-sf-text-3 mt-2 text-right">
+          {step < GEN_STEPS.length ? `Step ${step + 1} of ${GEN_STEPS.length}` : 'Complete'}
+        </p>
+      </div>
+    </div>
   )
 }
 
@@ -106,7 +183,7 @@ function InsightRow({ product }) {
 }
 
 /* ── Main component ──────────────────────────────────────────────────────── */
-export default function PricingEngine({ opportunity, customer, products, onGenerateQuote, onBack }) {
+export default function PricingEngine({ opportunity, customer, products, onGenerateQuote, onBack, onHome, onAccounts }) {
   const oppProducts = opportunity.items
     .map((id) => products.find((p) => p.id === id))
     .filter(Boolean)
@@ -115,6 +192,17 @@ export default function PricingEngine({ opportunity, customer, products, onGener
   const [aiStatus,  setAiStatus]  = useState('idle') // idle | loading | applied
   const [flash,     setFlash]     = useState({})
   const [insights,  setInsights]  = useState({})
+  const [genStep,   setGenStep]   = useState(null)  // null | 0 | 1 | 2
+
+  const handleGenerateQuote = (pricingData) => {
+    setGenStep(0)
+    setTimeout(() => setGenStep(1), 900)
+    setTimeout(() => setGenStep(2), 1800)
+    setTimeout(() => {
+      setGenStep(null)
+      onGenerateQuote(pricingData)
+    }, 2700)
+  }
 
   const handlePriceChange = (id, val) => {
     const n = parseFloat(val)
@@ -142,8 +230,11 @@ export default function PricingEngine({ opportunity, customer, products, onGener
   return (
     <div className="min-h-screen bg-sf-bg font-sans">
 
+      {/* ── SAP Quote generation overlay ────────────────────────────────── */}
+      {genStep !== null && <QuoteGenerationOverlay step={genStep} />}
+
       {/* ── Salesforce-style nav ─────────────────────────────────────────── */}
-      <SFNav onBack={onBack} opportunityTitle={opportunity.title} />
+      <SFNav onHome={onHome ?? onBack} onAccounts={onAccounts ?? onBack} />
 
       {/* ── Breadcrumb ───────────────────────────────────────────────────── */}
       <div className="bg-white border-b border-sf-border px-6 py-2.5 flex items-center gap-2 text-sm sticky top-12 z-40 shadow-sm">
@@ -477,7 +568,7 @@ export default function PricingEngine({ opportunity, customer, products, onGener
                 fontWeight: 700,
                 padding: '8px 28px',
               }}
-              onClick={() => onGenerateQuote(prices)}
+              onClick={() => handleGenerateQuote(prices)}
             >
               Generate SAP Quote
             </Button>

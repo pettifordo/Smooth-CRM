@@ -21,6 +21,9 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const goHome     = () => navigate('dashboard')
+  const goAccounts = () => navigate('dashboard')
+
   switch (view) {
     case 'dashboard':
       return (
@@ -37,7 +40,9 @@ export default function App() {
           customer={selectedCustomer}
           products={data.products}
           onSelectOpportunity={(opp) => navigate('opportunity-view', null, opp)}
-          onBack={() => navigate('dashboard')}
+          onBack={goAccounts}
+          onHome={goHome}
+          onAccounts={goAccounts}
         />
       )
 
@@ -49,6 +54,8 @@ export default function App() {
           products={data.products}
           onConfigurePricing={() => navigate('pricing-engine')}
           onBack={() => navigate('opportunity-list')}
+          onHome={goHome}
+          onAccounts={goAccounts}
         />
       )
 
@@ -63,6 +70,8 @@ export default function App() {
             navigate('sap-quote')
           }}
           onBack={() => navigate('opportunity-view')}
+          onHome={goHome}
+          onAccounts={goAccounts}
         />
       )
 
@@ -75,7 +84,8 @@ export default function App() {
           pricingData={pricingData}
           quoteId={quoteId}
           onBack={() => navigate('pricing-engine')}
-          onNewDeal={() => navigate('dashboard')}
+          onNewDeal={goHome}
+          onHome={goHome}
         />
       )
 
