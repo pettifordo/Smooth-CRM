@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
 import { Button, Spinner } from '@fluentui/react-components'
 import {
   SparkleRegular,
@@ -299,9 +299,8 @@ export default function PricingEngine({ opportunity, customer, products, onGener
                   const tc           = TREND_CONFIG[product.market_trend] ?? TREND_CONFIG.Stable
 
                   return (
-                    <>
+                    <Fragment key={product.id}>
                       <tr
-                        key={product.id}
                         className={`border-b border-sf-border/60 transition-colors hover:bg-[#EBF5FF]
                           ${idx % 2 === 0 ? 'bg-white' : 'bg-[#FAFAF9]'}`}
                       >
@@ -420,8 +419,8 @@ export default function PricingEngine({ opportunity, customer, products, onGener
                         </td>
                       </tr>
 
-                      {showInsight && <InsightRow key={`insight-${product.id}`} product={product} />}
-                    </>
+                      {showInsight && <InsightRow product={product} />}
+                    </Fragment>
                   )
                 })}
               </tbody>
