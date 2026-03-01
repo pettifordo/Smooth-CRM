@@ -1,0 +1,20 @@
+{
+  "products": [
+    { "id": "p1", "category": "Polymers", "name": "PolyFlow-7 High Density", "uom": "Metric Ton", "list_price": 2450, "floor_price": 2100, "market_trend": "Rising", "ai_recommendation": "High automotive demand; suggest +2%." },
+    { "id": "p2", "category": "Polymers", "name": "DuraPlastic-X2", "uom": "Metric Ton", "list_price": 1850, "floor_price": 1650, "market_trend": "Stable", "ai_recommendation": "Inventory surplus; match floor price." },
+    { "id": "s1", "category": "Surfactants", "name": "SurfX-Clean Bio-Based", "uom": "KG", "list_price": 12.50, "floor_price": 9.80, "market_trend": "Strong Growth", "ai_recommendation": "Sustainability premium; maintain 15% margin." },
+    { "id": "s2", "category": "Surfactants", "name": "EmulsiPrime Industrial", "uom": "KG", "list_price": 8.20, "floor_price": 6.50, "market_trend": "Volatile", "ai_recommendation": "Raw material costs up; do not drop below list." }
+  ],
+  "customers": [
+    { "id": "c1", "name": "Global Paint Corp", "region": "EMEA", "segment": "Coatings", "tier": "Platinum", "opportunities": [{ "id": "o1", "title": "Annual Polymer Supply", "value": 340000, "stage": "Negotiation", "items": ["p1", "p2"] }] },
+    { "id": "c2", "name": "Rhine Chem Solutions", "region": "DACH", "segment": "Cleaning", "tier": "Gold", "opportunities": [{ "id": "o2", "title": "Surfactant Bulk Q3", "value": 185000, "stage": "Proposal", "items": ["s1", "s2"] }] },
+    { "id": "c3", "name": "Alpine Plastics", "region": "DACH", "segment": "Packaging", "tier": "Silver", "opportunities": [{ "id": "o3", "title": "Resin Deal", "value": 290000, "stage": "Qualifying", "items": ["p1"] }] },
+    { "id": "c4", "name": "EuroFiber SA", "region": "France", "segment": "Textiles", "tier": "Gold", "opportunities": [{ "id": "o4", "title": "Softener Contract", "value": 210000, "stage": "Discovery", "items": ["s2"] }] },
+    { "id": "c5", "name": "Nordic Marine", "region": "Nordics", "segment": "Marine", "tier": "Platinum", "opportunities": [{ "id": "o5", "title": "Anti-Corrosive Base", "value": 395000, "stage": "Negotiation", "items": ["p1", "s1"] }] },
+    { "id": "c6", "name": "Bayerish Labs", "region": "DACH", "segment": "AgroChem", "tier": "Gold", "opportunities": [] },
+    { "id": "c7", "name": "Meditech Polymers", "region": "Benelux", "segment": "Medical", "tier": "Platinum", "opportunities": [{ "id": "o7", "title": "Medical Tubing", "value": 275000, "stage": "Discovery", "items": ["p2"] }] },
+    { "id": "c8", "name": "Milan Design Group", "region": "Italy", "segment": "Furniture", "tier": "Silver", "opportunities": [] },
+    { "id": "c9", "name": "Iberia Solvents", "region": "Spain", "segment": "Solvents", "tier": "Gold", "opportunities": [{ "id": "o9", "title": "Dispersant Deal", "value": 155000, "stage": "Closed", "items": ["s1"] }] },
+    { "id": "c10", "name": "Warsaw Industrial", "region": "Poland", "segment": "Manufacturing", "tier": "Silver", "opportunities": [{ "id": "o10", "title": "General Polymer", "value": 190000, "stage": "Proposal", "items": ["p1"] }] }
+  ]
+}
